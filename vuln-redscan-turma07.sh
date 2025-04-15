@@ -19,6 +19,16 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir "$LOG_DIR"
 fi
 
+# Solicita IP suspeito com validação
+read -rp "Digite o IP suspeito para análise: " SUSPECT_IP
+if [[ ! $SUSPECT_IP =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo "[!] IP inválido. Encerrando..."
+    exit 1
+fi
+
+# Solicita arquivo sensível a ser buscado
+read -rp "Digite o nome de um arquivo sensível para busca (ex: .env): " SENSITIVE_FILE
+
 printf "\n[+] Etapa 1 - Detectar possíveis ataques de XSS (Cross-Site Scripting)\n" | tee -a "$LOG_FILE"
 grep -iE "<script|%3Cscript" access.log | tee -a "$LOG_FILE"
 
@@ -38,17 +48,17 @@ printf "\n[+] Etapa 6 - Detectar possíveis ataques de força bruta a arquivos/p
 grep " 404 " access.log | cut -d " " -f 1 | sort | uniq -c | sort -nr | head | tee -a "$LOG_FILE"
 
 printf "\n[+] Etapa 7 - Primeiro e último acesso de um IP suspeito\n" | tee -a "$LOG_FILE"
-grep "IP" access.log | head -n1 | tee -a "$LOG_FILE"
-grep "IP" access.log | tail -n1 | tee -a "$LOG_FILE"
-=
+grep "$SUSPECT_IP" access.log | head -n1 | tee -a "$LOG_FILE"
+grep "$SUSPECT_IP" access.log | tail -n1 | tee -a "$LOG_FILE"
+
 printf "\n[+] Etapa 8 - Localizar user-agent utilizado por um IP suspeito\n" | tee -a "$LOG_FILE"
-grep "IP_SUSPEITO" access.log | cut -d '"' -f 6 | sort | uniq | tee -a "$LOG_FILE"
+grep "$SUSPECT_IP" access.log | cut -d '"' -f 6 | sort | uniq | tee -a "$LOG_FILE"
 
 printf "\n[+] Etapa 9 - Listar os IPs e verificar o número de requisições\n" | tee -a "$LOG_FILE"
-cat access.log | cut -d " " -f 1 | sort | uniq -c | tee -a "$LOG_FILE"
+cut -d " " -f 1 access.log | sort | uniq -c | tee -a "$LOG_FILE"
 
 printf "\n[+] Etapa 10 - Localizar acesso a um determinado arquivo sensível\n" | tee -a "$LOG_FILE"
-grep "arquivosensivel" access.log | tee -a "$LOG_FILE"
+grep "$SENSITIVE_FILE" access.log | tee -a "$LOG_FILE"
 
 printf "\n[✔] Análise concluída. Resultados salvos em $LOG_FILE\n"
 exit 0
