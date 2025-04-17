@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------------------------------------------
-# Script: vuln-VERMELHOscan-turma07-v2.sh
+# Script: vuln-redscab-turma07-v2.sh
 # Objetivo: Menu interativo para análise de logs HTTP com foco em cibersegurança
 # Autor: domcabral9
 # Contato: domcabral@proton.me
