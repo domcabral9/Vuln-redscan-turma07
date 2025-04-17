@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------------------------------------------
-# Script: vuln-redscab-turma07-v2.sh
+# Script: vuln-redscan-turma07.sh
 # Objetivo: Menu interativo para análise de logs HTTP com foco em cibersegurança
 # Autor: domcabral9
 # Contato: domcabral@proton.me
@@ -33,8 +33,8 @@ TIMESTAMP=$(date +"%Y%m%d-%H%M%S")
 LOG_FILE="$LOG_DIR/scan-$TIMESTAMP.log"
 mkdir -p "$LOG_DIR"
 
-read -rp $'\e[33mDigite o IP suspeito para análise: \e[0m' SUSPECT_IP
-if [[ ! $SUSPECT_IP =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+read -rp $'\e[33mDigite o IP suspeito para análise: \e[0m' IP_SUSPEITO
+if [[ ! $IP_SUSPEITO =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     echo -e "${VERMELHO}[!] IP inválido. Encerrando...${REINICIA}"
     exit 1
 fi
@@ -83,13 +83,13 @@ while true; do
             grep " 404 " "$ARQUIVO_LOG" | cut -d " " -f 1 | sort | uniq -c | sort -nr | head | tee -a "$LOG_FILE"
             ;;
         7)
-            echo -e "\n${CIANO}[+] Primeiro e último acesso do IP $SUSPECT_IP${REINICIA}" | tee -a "$LOG_FILE"
-            grep "$SUSPECT_IP" "$ARQUIVO_LOG" | head -n1 | tee -a "$LOG_FILE"
-            grep "$SUSPECT_IP" "$ARQUIVO_LOG" | tail -n1 | tee -a "$LOG_FILE"
+            echo -e "\n${CIANO}[+] Primeiro e último acesso do IP $IP_SUSPEITO${REINICIA}" | tee -a "$LOG_FILE"
+            grep "$IP_SUSPEITO" "$ARQUIVO_LOG" | head -n1 | tee -a "$LOG_FILE"
+            grep "$IP_SUSPEITO" "$ARQUIVO_LOG" | tail -n1 | tee -a "$LOG_FILE"
             ;;
         8)
-            echo -e "\n${CIANO}[+] User-Agent de $SUSPECT_IP${REINICIA}" | tee -a "$LOG_FILE"
-            grep "$SUSPECT_IP" "$ARQUIVO_LOG" | cut -d '"' -f 6 | sort | uniq | tee -a "$LOG_FILE"
+            echo -e "\n${CIANO}[+] User-Agent de $IP_SUSPEITO${REINICIA}" | tee -a "$LOG_FILE"
+            grep "$IP_SUSPEITO" "$ARQUIVO_LOG" | cut -d '"' -f 6 | sort | uniq | tee -a "$LOG_FILE"
             ;;
         9)
             echo -e "\n${CIANO}[+] Requisições por IP${REINICIA}" | tee -a "$LOG_FILE"
