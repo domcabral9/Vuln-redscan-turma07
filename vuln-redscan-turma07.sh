@@ -55,9 +55,9 @@ while true; do
     echo "9) Requisições por IP"
     echo "10) Acesso a arquivo sensível"
     echo "0) Sair"
-    read -rp $'\e[33mOpção: \e[0m' opt
+    read -rp $'\e[33mOpção: \e[0m' OPCAO
 
-    case $opt in
+    case $OPCAO in
         1)
             echo -e "\n${CIANO}[+] XSS${REINICIA}" | tee -a "$LOG_FILE"
             grep -iE "<script|%3Cscript" "$ARQUIVO_LOG" | tee -a "$LOG_FILE"
