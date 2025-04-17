@@ -39,7 +39,7 @@ if [[ ! $SUSPECT_IP =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     exit 1
 fi
 
-read -rp $'\e[33mDigite o nome de um arquivo sensível para busca (ex: .env): \e[0m' SENSITIVE_FILE
+read -rp $'\e[33mDigite o nome de um arquivo sensível para busca (ex: .env): \e[0m' ARQUIVO_SENSIVEL
 
 while true; do
     echo ""
@@ -96,8 +96,8 @@ while true; do
             cut -d " " -f 1 "$ARQUIVO_LOG" | sort | uniq -c | tee -a "$LOG_FILE"
             ;;
         10)
-            echo -e "\n${CIANO}[+] Acessos ao arquivo '$SENSITIVE_FILE'${REINICIA}" | tee -a "$LOG_FILE"
-            grep "$SENSITIVE_FILE" "$ARQUIVO_LOG" | tee -a "$LOG_FILE"
+            echo -e "\n${CIANO}[+] Acessos ao arquivo '$ARQUIVO_SENSIVEL'${REINICIA}" | tee -a "$LOG_FILE"
+            grep "$ARQUIVO_SENSIVEL" "$ARQUIVO_LOG" | tee -a "$LOG_FILE"
             ;;
         0)
             echo -e "${VERDE}[✔] Saindo. Log salvo em $LOG_FILE${REINICIA}"
