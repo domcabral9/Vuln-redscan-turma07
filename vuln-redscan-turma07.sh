@@ -5,6 +5,7 @@
 # Objetivo: Menu interativo para análise de logs HTTP com foco em cibersegurança
 # Autor: domcabral9
 # Contato: domcabral@proton.me
+# Revisão 0.2
 # ---------------------------------------------------------------------------
 
 # Cores
